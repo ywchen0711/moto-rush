@@ -47,6 +47,8 @@
   function load(k, d) { try { var v = localStorage.getItem('moto.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }
   function save(k, v) { try { localStorage.setItem('moto.' + k, JSON.stringify(v)); } catch (e) { /* private mode */ } }
   var set = load('settings', { lang: (navigator.language || '').indexOf('zh') === 0 ? 'zh' : 'en', sound: true, laps: 3, difficulty: 'normal', autoGas: false });
+  var fromLobby = (typeof location !== 'undefined' && (location.search.match(/[?&]lang=(zh|en)(?![a-z])/) || [])[1]);   // the lobby opens games with ?lang=zh|en
+  if (fromLobby) { set.lang = fromLobby; save('settings', set); }
   var records = load('records', {});
   var T = function () { return TX[set.lang]; };
   A.on = set.sound;
